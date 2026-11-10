@@ -1,0 +1,39 @@
+# Bau-Läufer der EVA-Apps. Quelle: apps/_ci/ios-bau.yml im Archiv, im Spiegel eva-apps unter .github/workflows/.
+# Baut je App eine unsignierte IPA. Signiert wird erst beim Aufspielen über SideStore.
+name: iOS-Bau
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  weather:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode wählen
+        run: |
+          ls -d /Applications/Xcode*.app
+          sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)"
+          xcodebuild -version
+      - name: XcodeGen
+        run: brew install xcodegen && cd weather && xcodegen generate
+      - name: Archiv ohne Signatur
+        run: |
+          xcodebuild -project weather/EVAWeather.xcodeproj -scheme EVAWeather -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/EVAWeather.xcarchive" \
+            archive CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
+      - name: IPA packen
+        run: |
+          cd "$RUNNER_TEMP"
+          mkdir -p Payload
+          cp -R EVAWeather.xcarchive/Products/Applications/EVAWeather.app Payload/
+          zip -qry EVAWeather.ipa Payload
+          ls -l EVAWeather.ipa
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EVAWeather-ipa
+          path: ${{ runner.temp }}/EVAWeather.ipa
+          retention-days: 30
