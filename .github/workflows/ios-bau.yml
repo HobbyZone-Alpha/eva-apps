@@ -18,6 +18,8 @@ jobs:
           ls -d /Applications/Xcode*.app
           sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)"
           xcodebuild -version
+      - name: Tests des gemeinsamen Pakets
+        run: cd _gemeinsam && swift test
       - name: XcodeGen
         run: brew install xcodegen && cd weather && xcodegen generate
       - name: Archiv ohne Signatur
