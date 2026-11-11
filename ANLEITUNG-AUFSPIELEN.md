@@ -64,9 +64,16 @@ Den Rechner und das Kabel brauchst du ab jetzt nicht mehr.
 2. **LiveContainer** öffnen. Oben links **»SideStore«** antippen.
 3. In SideStore unten **Einstellungen** öffnen und dort mit deiner Apple-ID anmelden. Auch wenn sie schon angemeldet
    wirkt: einmal abmelden und neu anmelden.
+
+   **Kommt »Failed to Log In« mit der Nummer -80045** (Apple-seitig seit Oktober 2026, gemessen bei Rico am
+   2026-11-11): in SideStore unter **Settings → »Anisette Servers«** den Server **»SideStore (New)«** wählen (gibt es
+   ihn nicht: **»JKcoxson«**), ganz unten in der Liste **»Enable Auto Rotation«** ausschalten und neu anmelden. Das hat
+   bei Rico sofort geklappt. Höchstens zwei Versuche, sonst droht eine Sperre der Apple-ID.
 4. In SideStore **»My Apps«** öffnen und **»Refresh All«** tippen. Kurz warten.
 5. SideStore schließen (vom unteren Rand nach oben wischen) und **LiveContainer** wieder öffnen.
-6. In LiveContainer **Einstellungen → »Import Certificate from SideStore«** tippen, dann **»OK«**.
+6. In LiveContainer **Einstellungen → »Zertifikat von SideStore importieren«** (englisch »Import Certificate from
+   SideStore«) tippen, dann **»OK«**. Kommt »Zertifikat nicht gefunden«, war die Anmeldung in Schritt 3 noch nicht
+   erfolgreich.
    Steht danach dort **»Remove Certificate«**, hat es geklappt.
 
 ## Teil 6: EVA WEATHER holen und starten (2 Minuten)
