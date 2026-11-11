@@ -17,8 +17,8 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.egis-datenbankarchiv.eva-weather
         PRODUCT_NAME: EVAWeather
-        MARKETING_VERSION: "0.1.0"
-        CURRENT_PROJECT_VERSION: "1"
+        MARKETING_VERSION: "0.4.0"
+        CURRENT_PROJECT_VERSION: "4"
         TARGETED_DEVICE_FAMILY: "1,2"
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: EVA WEATHER
@@ -26,4 +26,5 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_NSCameraUsageDescription: "Die Kamera liest den Anmelde-Code vom Rechner."
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "Für das Wetter am Standort und den nächsten Ort. Die Position geht nur an dein Archiv, gerundet auf rund 5 km, und wird dort nicht gespeichert."
         SWIFT_VERSION: "5.0"

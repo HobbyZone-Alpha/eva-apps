@@ -19,11 +19,12 @@ public struct ArchivClient: Sendable {
     public let anmeldung: Anmeldung
     private let sitzung: URLSession
 
-    public init(anmeldung: Anmeldung) {
+    /// zeitlimit: Sekunden je Anfrage. 30 reichen für alles außer der Strecken-Route.
+    public init(anmeldung: Anmeldung, zeitlimit: TimeInterval = 30) {
         self.anmeldung = anmeldung
         let konf = URLSessionConfiguration.ephemeral
-        konf.timeoutIntervalForRequest = 15
-        konf.timeoutIntervalForResource = 30
+        konf.timeoutIntervalForRequest = zeitlimit
+        konf.timeoutIntervalForResource = zeitlimit * 2
         konf.requestCachePolicy = .reloadIgnoringLocalCacheData
         self.sitzung = URLSession(configuration: konf)
     }
@@ -52,7 +53,14 @@ public struct ArchivClient: Sendable {
         do {
             (daten, antwort) = try await sitzung.data(for: a)
         } catch {
-            throw Fehler.keinNetz
+            // Ein Abbruch beim ersten Abruf nach dem Start kam am 2026-11-11 zweimal vor (nginx 499 nach 15 s);
+            // ein zweiter Versuch nach einer Sekunde klärt das, ohne den Nutzer zu fragen.
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            do {
+                (daten, antwort) = try await sitzung.data(for: a)
+            } catch {
+                throw Fehler.keinNetz
+            }
         }
         guard let http = antwort as? HTTPURLResponse else { throw Fehler.unlesbar }
         switch http.statusCode {
